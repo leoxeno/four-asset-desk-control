@@ -1,0 +1,95 @@
+{
+  "arm": "treatment",
+  "run": 1,
+  "model": "claude-opus-5-5",
+  "effort": "high",
+  "claude_code_version": "2.1.293 (Claude Code)",
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "claude-opus-5-5",
+    "--effort",
+    "high",
+    "--output-format",
+    "stream-json",
+    "--verbose",
+    "--no-session-persistence",
+    "--safe-mode",
+    "--strict-mcp-config",
+    "--setting-sources",
+    "",
+    "--settings",
+    "/root/projects/eduba/four-asset-desk-control/treatment/v2/run-1/settings.json",
+    "--tools",
+    "Bash,Read,Write,Glob,Grep",
+    "--disallowedTools",
+    "WebSearch,WebFetch",
+    "--allowedTools",
+    "Bash,Read(./**),Write(./**),Glob,Grep",
+    "--permission-mode",
+    "dontAsk",
+    "--permission-prompts",
+    "none",
+    "--system-prompt",
+    "Answer the user's question. Read README.md first and follow it.",
+    "<prompt>"
+  ],
+  "tools": "Bash,Read,Write,Glob,Grep",
+  "sandbox_settings": {
+    "sandbox": {
+      "enabled": true,
+      "failIfUnavailable": true,
+      "allowUnsandboxedCommands": false,
+      "autoAllowBashIfSandboxed": true,
+      "network": {
+        "allowedDomains": [],
+        "strictAllowlist": true,
+        "allowUnixSockets": [],
+        "allowLocalBinding": false
+      },
+      "filesystem": {
+        "allowWrite": [
+          "."
+        ],
+        "denyRead": [
+          "/root",
+          "/home",
+          "/mnt",
+          "/tmp",
+          "/var/tmp"
+        ]
+      }
+    },
+    "permissions": {
+      "blockReadsOutsideWorkingDirectories": true
+    }
+  },
+  "system_prompt": "Answer the user's question. Read README.md first and follow it.",
+  "questions_file": "questions.md",
+  "questions": [
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6",
+    "Q7",
+    "Q8"
+  ],
+  "prompt_delivery": "argument, one fresh session per question, from a throwaway working directory under /srv/comp14-runs",
+  "repo_commit": "68aacb2",
+  "started_at": "2026-10-13T16:14:21+01:00",
+  "jobs": 8,
+  "workdir_files": [
+    "README.md",
+    "examples.md",
+    "identity.md",
+    "reference/data/data-dictionary.md",
+    "reference/data/fetch-log.txt",
+    "reference/data/monthly-adjusted-close.csv",
+    "reference/methodology.md",
+    "rules.md"
+  ],
+  "finished_at": "2026-10-13T16:14:48+01:00"
+}
