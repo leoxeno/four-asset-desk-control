@@ -9,15 +9,15 @@ A private pilot by the same author preceded this repo, on the same machine, with
 | Arm | Output folder | Working directory holds | Extra system-prompt line | What it measures |
 |-----|---------------|-------------------------|--------------------------|------------------|
 | cold | `control/` | nothing | none | the bare model: memory, priors, hedging, invention. The brief's "no folder". |
-| treatment | `treatment/` | `README.md`, `identity.md`, `rules.md`, `examples.md`, `reference/methodology.md`, `reference/data/data-dictionary.md`, `reference/data/monthly-adjusted-close.csv`, `reference/data/fetch-log.txt` | `Read README.md first and follow it.` | the folder |
+| treatment | `treatment/v1/`, `v2/`, `v3/` (one per map version) | `README.md`, `identity.md`, `rules.md`, `examples.md`, `reference/methodology.md`, `reference/data/data-dictionary.md`, `reference/data/monthly-adjusted-close.csv`, `reference/data/fetch-log.txt` | `Read README.md first and follow it.` | the folder |
 
 The base system prompt in every arm is the single sentence `Answer the user's question.` The extra line is the headless analogue of claude.ai project instructions: it says what is in the project and nothing more. Each run's exact system prompt is saved as `system-prompt.txt` beside its transcript.
 
 Every arm runs twice (`run-1/`, `run-2/`). Each question is answered in a fresh session from a throwaway working directory under `/srv/comp14-runs/` that holds only that arm's files and is deleted after the answer. `questions.md`, `tools/`, `control/`, `treatment/`, `grading.yml` and `results.md` are never inside a working directory, and the sandbox denies reads of the repo's location anyway.
 
-Within a run the questions run concurrently, `--jobs 8`, each in its own session and its own working directory; the transcript keeps the committed order. The pilot tested three concurrent sandboxed sessions per arm: the network was still refused, the answers were unchanged and no session could see another's working directory. Each run's `run-info.json` records the job count used.
+Within a run the questions run concurrently, `--jobs 8` for the eight committed questions and `--jobs 3` for the outside check's three, each in its own session and its own working directory; the transcript keeps the committed order. The pilot tested three concurrent sandboxed sessions per arm: the network was still refused, the answers were unchanged and no session could see another's working directory. Each run's `run-info.json` records the job count used.
 
-Order of events: cold control (both runs) first, before the folder existed. Then the folder, committed and walk-tested. Then treatment (both runs). Then results. Then the outside check: three questions written by a blank session, keyed and committed, then run on both arms (both runs). The commit timestamps on GitHub are the record; each run's `run-info.json` names the commit it ran against.
+Order of events: cold control (both runs) first, before the folder existed. Then the folder with its first map, committed and walk-tested. Then treatment v1 (both runs) and results v1; the second map (`README.md` only) and treatment v2 (both runs); the third map (`README.md` only) and treatment v3 (both runs). Then the outside check: three questions written by a blank session, keyed and committed, then run on both arms (both runs), the treatment on v3. The commit timestamps on GitHub are the record; each run's `run-info.json` names the commit it ran against.
 
 ## Settings, identical in every arm
 
@@ -39,6 +39,8 @@ The sandbox was proved on this repo before any scored run with `python3 tools/ch
 
 One hole in the sandbox, found during cold run 1 and measured before any treatment run. The runner hands each session its settings file from the run's output directory inside this repo (`control/run-1/settings.json` and so on), and Claude Code lets a session see the directory that holds the settings file it was given: a plain `ls` from sandboxed Bash lists it, and the model can name the path because Claude Code's own context carries it. `tools/probe_settings_dir.py` asked a session with the runner's exact flags and the real settings file to go further; `tools/settings-dir-probe.log` is its output, verbatim. The run directory is fully readable, including the result files of sibling questions that finished earlier in the same run. Nothing else is: the parent directories are empty stubs, the repo root shows only `control/`, the price file and `questions.md` do not exist from inside the session, and the Read and Glob tools are refused outside the working directory. So no session of any arm could reach the data, the questions or another arm's runs. What a session could see was its own settings, its own system prompt, and its siblings' answers to other questions; and the path itself names the arm. `tools/extract.py` counts the sessions that touched the directory, and `results.md` reports the count for every arm. The runner was left as it was, so that every scored run in this repo had the same environment; the fix for a future runner is to write the settings file into a throwaway directory of its own.
 
+A second gap, known before any run: `/tmp` is in the deny list above, but the sandbox uses it itself and does not deny it. That is why the throwaway working directories live under `/srv/comp14-runs/` and why, before any run, a scan of the whole machine checked that no copy of the price file existed outside this repo and the private pilot, both under the home directory, which the sandbox does deny. `results.md` reports what one cold session saw there.
+
 Two artefacts a reader will notice in transcripts. First, Claude Code adds its own environment block to every session (working directory, platform, today's date), so the bare model knows the date; that is identical across arms. Second, the sandbox creates a `.claude` folder and masks dotfiles inside the working directory; the model may mention "config files" it did not ask for. Neither is part of any arm.
 
 ## Re-run an arm
@@ -48,10 +50,10 @@ Needs Python 3.10+, Claude Code on your PATH and logged in, and on Linux the san
 ```bash
 python3 tools/check_sandbox.py                 # prove the network is sealed on your machine first
 python3 tools/run_arm.py cold 3 --jobs 8       # any run number that does not exist yet
-python3 tools/run_arm.py treatment 3 --jobs 8
+python3 tools/run_arm.py treatment 3 --jobs 8 --out treatment/v3     # the folder as it ships
 ```
 
-`--jobs 1` runs the questions one after another and changes nothing else. The runner never overwrites a run. Each run's `run-info.json` names the commit it ran against; check that commit out first to reproduce the folder exactly as it was.
+`--jobs 1` runs the questions one after another and changes nothing else. The runner never overwrites a run. Each run's `run-info.json` names the commit it ran against; to reproduce v1 or v2, check out that commit's `README.md` first, as the reproduce block in `results.md` shows.
 
 To grade a run, read `questions.md` and apply its rules to each `qN.json` `result_text`, then record verdicts in `grading.yml` and run `python3 tools/score.py --write`. `python3 tools/extract.py control/run-1` prints a digest of a run for grading.
 

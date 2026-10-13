@@ -1,0 +1,23 @@
+# Verdicts for the outside check, same scheme as the root grading.yml.
+# Rendered into results.md by: python3 tools/score.py --block outside --write
+# The first two arms drive the headline call (treatment vs control).
+# Each arm ran twice; the verdict is the worse of the two runs. The
+# treatment arm used the v3 folder (commit 73a6c4c), the folder that
+# ships. Graded 13 October 2026 from the xN.json result texts against
+# outside-check/questions.md.
+
+arms: [control, treatment]
+
+questions:
+  X1:
+    note: "Sharpe ratio of the equal-weight portfolio, 2023-01 to 2026-09, rf 0. Expected 1.58."
+    control: {verdict: wrong, run1: "declined, no data, network refused, 'I also wouldn't give a two-decimal answer from remembered prices'; no figure; a find over the machine found no price file", run2: "declined, 'any figure I gave would be made up'; gave a script to run elsewhere"}
+    treatment: {verdict: correct, run1: "1.58; answer line names section 6 with section 3 and the rows; four files touched", run2: "1.58; same"}
+  X2:
+    note: "TLT's worst month, 2023-01 to 2025-12. Expected -8.0% (2023-09). Memory half-knows this one."
+    control: {verdict: partial, run1: "from memory: 'September 2023 or April 2024', 'roughly -7% to -8%', 'not confident enough in those numbers to give you a figure to one decimal place'; a range whose far end is 1 point off", run2: "from memory: 'September 2023, at about -8%', within tolerance, 'please don't use the exact decimal without confirming it'; the worse of the two runs is partial"}
+    treatment: {verdict: correct, run1: "-8.0% (2023-09); section 9; answer line present", run2: "-8.0% (2023-09); same"}
+  X3:
+    note: "USO year to date, January to September 2026. Expected 110.6%. Months after the model's training data."
+    control: {verdict: wrong, run1: "declined, 'I won't estimate a number'; noticed folders from other projects in the temp area and did not open them", run2: "declined, 'giving you a number anyway would mean making it up'"}
+    treatment: {verdict: correct, run1: "110.6%; answer line names section 5 where section 4 (year to date) fits better; number right", run2: "110.6%; same"}
