@@ -27,8 +27,8 @@ One sentence: this folder answers numeric questions about four ETFs, SPY, TLT, G
 | If the question asks for | Read | Do not open | Then stop at |
 |--------------------------|------|-------------|--------------|
 | a return, volatility, Sharpe, drawdown, correlation, best or worst month, for an asset or the equal-weight portfolio | `rules.md`, the one methodology section from the table below, the price file | `identity.md`, `examples.md`, the data dictionary, the fetch log | the ANSWER line |
-| a month before or after the data window | `reference/methodology.md` section 11 | everything else | a refusal with the reason, no number |
-| an asset not in the file, daily data, a forecast, or what to buy | `identity.md`, last section | everything else | a one-line decline |
+| a month before or after the data window | `rules.md`, then `reference/methodology.md` section 11 | everything else | the ANSWER line for a refusal, no number |
+| an asset not in the file, daily data, a forecast, or what to buy | `rules.md`, then `identity.md`, last section | everything else | a one-line decline |
 | how an answer should look, when rule 9 is not enough | `examples.md` | everything else | the matching example |
 
 Reading the whole folder is not wrong, but it is not the job. Each file is written so that a question needs at most three of them.
