@@ -1,0 +1,2 @@
+2026-10-13 12:58 UTC  yfinance 1.0  pandas 2.3.3  rows 46  first 2022-12-31  last 2026-09-30  -> reference/data/monthly-adjusted-close.csv
+2026-10-13 15:00 UTC  snapshot carried over unchanged from the private pilot (same file, md5 462587a3e26c555ba4ed97493820f54a); not re-fetched, so the answer key is the pilot's
