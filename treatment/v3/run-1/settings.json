@@ -1,0 +1,29 @@
+{
+  "sandbox": {
+    "enabled": true,
+    "failIfUnavailable": true,
+    "allowUnsandboxedCommands": false,
+    "autoAllowBashIfSandboxed": true,
+    "network": {
+      "allowedDomains": [],
+      "strictAllowlist": true,
+      "allowUnixSockets": [],
+      "allowLocalBinding": false
+    },
+    "filesystem": {
+      "allowWrite": [
+        "."
+      ],
+      "denyRead": [
+        "/root",
+        "/home",
+        "/mnt",
+        "/tmp",
+        "/var/tmp"
+      ]
+    }
+  },
+  "permissions": {
+    "blockReadsOutsideWorkingDirectories": true
+  }
+}
