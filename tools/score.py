@@ -43,21 +43,25 @@ def build(grading: pathlib.Path) -> str:
     sort_key = (lambda k: int(k)) if all(str(k).isdigit() for k in questions) else (lambda k: str(k))
     lines = ["| # | " + " | ".join(arms) + f" | {headline} | note |", "|---|" + "---|" * (len(arms) + 2)]
     tallies = {arm: {"correct": 0, "partial": 0, "wrong": 0, "not run": 0} for arm in arms}
-    calls = {"folder win": 0, "tie": 0, "folder loss": 0, "not run": 0}
+    calls = {arm: {"folder win": 0, "tie": 0, "folder loss": 0, "not run": 0} for arm in arms[1:]}
     for number in sorted(questions, key=sort_key):
         row = questions[number]
         verdicts = [row.get(arm, {}).get("verdict", "not run") for arm in arms]
         for arm, verdict in zip(arms, verdicts):
             tallies[arm][verdict] += 1
-        c = call(row.get(arms[0], {}).get("verdict", "not run"), row.get(arms[1], {}).get("verdict", "not run"))
-        calls[c] += 1
+        control = row.get(arms[0], {}).get("verdict", "not run")
+        for arm in arms[1:]:                      # every folder arm against the control; the column shows the first
+            calls[arm][call(control, row.get(arm, {}).get("verdict", "not run"))] += 1
+        c = call(control, row.get(arms[1], {}).get("verdict", "not run"))
         note = row.get("note", "")
         lines.append(f"| {number} | " + " | ".join(verdicts) + f" | {c} | {note} |")
     lines.append("")
     for arm in arms:
         t = tallies[arm]
         lines.append(f"- {arm}: {t['correct']} correct, {t['partial']} partial, {t['wrong']} wrong" + (f", {t['not run']} not run" if t["not run"] else ""))
-    lines.append(f"- {headline}: {calls['folder win']} wins, {calls['tie']} ties, {calls['folder loss']} losses" + (f", {calls['not run']} not run" if calls["not run"] else ""))
+    for arm in arms[1:]:
+        k = calls[arm]
+        lines.append(f"- {arm} vs {arms[0]}: {k['folder win']} wins, {k['tie']} ties, {k['folder loss']} losses" + (f", {k['not run']} not run" if k["not run"] else ""))
     return "\n".join(lines)
 
 

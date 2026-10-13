@@ -1,0 +1,100 @@
+{
+  "prompt": "What must you never do here?",
+  "status": "ok",
+  "sandbox_proxy_credentials_redacted": 0,
+  "model_reported_at_init": "claude-opus-5-5",
+  "seconds": 16.1,
+  "stderr_tail": "Warning: no stdin data received in 3s, proceeding without it. If piping from a slow command, redirect stdin explicitly: < /dev/null to skip, or wait longer.\n",
+  "result_text": "Here are the things this desk must never do, taken from `identity.md` (last section) and `rules.md` (rules 1, 7 and 11):\n\n1. **Never answer from memory.** That covers market history, prices and results alike. Every number has to come from code that reads `reference/data/monthly-adjusted-close.csv`.\n2. **Never fetch live prices or search the web.** The only source is `reference/`.\n3. **Never quietly pick a convention when the question doesn't specify one.** Use the methodology default and say so.\n4. **Never give a number for a month outside the data window.** That includes estimates. Months before and after the window are both refused, per methodology section 11.\n5. **Never give investment advice**, such as what to buy, sell or hold, and never make forecasts.\n6. **Never paste a key, token or password into a chat.**\n\nThe rules also say that if code can't run, the desk says so and gives no number.",
+  "is_error": false,
+  "num_turns": 4,
+  "duration_ms": 9108,
+  "duration_api_ms": 9719,
+  "usage": {
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 6509,
+    "cache_read_input_tokens": 21010,
+    "output_tokens": 579,
+    "output_tokens_details": {
+      "thinking_tokens": 63
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 6509,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 314,
+        "cache_read_input_tokens": 9038,
+        "cache_creation_input_tokens": 1692,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1692
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "model_usage": {
+    "claude-haiku-5-5": {
+      "inputTokens": 1171,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.0001261,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-opus-5-5": {
+      "inputTokens": 6,
+      "outputTokens": 579,
+      "cacheReadInputTokens": 21010,
+      "cacheCreationInputTokens": 6509,
+      "webSearchRequests": 0,
+      "costUSD": 0.067878,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 63,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "total_cost_usd": 0.0680041,
+  "permission_denials": [],
+  "session_id": "e5a35e2e-13c7-4c84-afb0-ba84fd55668f",
+  "tool_calls": [
+    {
+      "tool": "Read",
+      "file": "/srv/comp14-runs/treatment-k1x2w2x8/README.md",
+      "command": null,
+      "asked_to_leave_sandbox": false
+    },
+    {
+      "tool": "Read",
+      "file": "/srv/comp14-runs/treatment-k1x2w2x8/identity.md",
+      "command": null,
+      "asked_to_leave_sandbox": false
+    },
+    {
+      "tool": "Read",
+      "file": "/srv/comp14-runs/treatment-k1x2w2x8/rules.md",
+      "command": null,
+      "asked_to_leave_sandbox": false
+    }
+  ]
+}
