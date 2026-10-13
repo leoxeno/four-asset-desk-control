@@ -7,7 +7,7 @@ One sentence: this folder answers numeric questions about four ETFs, SPY, TLT, G
 ## What is this, what do I do next, where does the information come from, what breaks it?
 
 - What: a desk that turns a plain question into one checkable number with its method and its rows.
-- Next: read `identity.md` (the job), then `rules.md` (what must be true of every answer), then compute from `reference/`.
+- Next: for a numeric question, read `rules.md`, then the one methodology section named in the table below, then compute from the price file. Open nothing else unless the route table sends you there.
 - Information: only `reference/`. The price file holds the prices, the data dictionary says what the columns are, the methodology holds every convention. Nothing comes from memory of markets.
 - Breaks: months outside the window the methodology defines, assets not in the file, anything needing daily prices, and any request for a forecast or advice.
 
@@ -24,12 +24,14 @@ One sentence: this folder answers numeric questions about four ETFs, SPY, TLT, G
 
 ## Route by what was asked
 
-| If the question asks for | Read | Then stop at |
-|--------------------------|------|--------------|
-| a return, volatility, Sharpe, drawdown, correlation, best or worst month, for an asset or the equal-weight portfolio | `rules.md`, the methodology section from the table below, the price file | the ANSWER line |
-| a month before or after the data window | `reference/methodology.md` section 11 | a refusal with the reason, no number |
-| an asset not in the file, daily data, a forecast, or what to buy | `identity.md`, last section | a one-line decline |
-| how an answer should look | `examples.md` | the matching example |
+| If the question asks for | Read | Do not open | Then stop at |
+|--------------------------|------|-------------|--------------|
+| a return, volatility, Sharpe, drawdown, correlation, best or worst month, for an asset or the equal-weight portfolio | `rules.md`, the one methodology section from the table below, the price file | `identity.md`, `examples.md`, the data dictionary, the fetch log | the ANSWER line |
+| a month before or after the data window | `reference/methodology.md` section 11 | everything else | a refusal with the reason, no number |
+| an asset not in the file, daily data, a forecast, or what to buy | `identity.md`, last section | everything else | a one-line decline |
+| how an answer should look, when rule 9 is not enough | `examples.md` | everything else | the matching example |
+
+Reading the whole folder is not wrong, but it is not the job. Each file is written so that a question needs at most three of them.
 
 ## Which methodology section
 
