@@ -45,6 +45,11 @@ def files_touched(d: dict) -> list[str]:
     return seen
 
 
+def run_dir_calls(d: dict) -> int:
+    """Tool calls that named this repo's path: the run's own output directory, which holds the session's settings file (see PROTOCOL.md)."""
+    return sum(1 for c in d["tool_calls"] if ROOT.name in (c.get("command") or "") or ROOT.name in (c.get("file") or ""))
+
+
 def digest(d: dict, full: bool) -> str:
     txt = d.get("result_text") or ""
     answer_line = next((ln.strip() for ln in txt.splitlines() if ln.strip().startswith("ANSWER:") or ln.strip().startswith("`ANSWER:")), None)
@@ -52,9 +57,10 @@ def digest(d: dict, full: bool) -> str:
     reads = files_touched(d)
     bash = sum(1 for c in d["tool_calls"] if c["tool"] == "Bash")
     left = sum(1 for c in d["tool_calls"] if c.get("asked_to_leave_sandbox"))
+    rundir = run_dir_calls(d)
     words = len(re.findall(r"\b\w+\b", txt))
     lines = [
-        f"### {d['label']}  [{d['status']}] turns {d['num_turns']}, {d['seconds']}s, out tokens {(d['usage'] or {}).get('output_tokens')}, words {words}, bash {bash}, files touched {reads}, left-sandbox {left}, denials {len(d.get('permission_denials') or [])}",
+        f"### {d['label']}  [{d['status']}] turns {d['num_turns']}, {d['seconds']}s, out tokens {(d['usage'] or {}).get('output_tokens')}, words {words}, bash {bash}, files touched {reads}, left-sandbox {left}, denials {len(d.get('permission_denials') or [])}, run-dir calls {rundir}",
         f"answer line: {answer_line}",
         f"bold: {bolds}",
     ]
@@ -63,7 +69,7 @@ def digest(d: dict, full: bool) -> str:
 
 
 def table(run_dirs: list[pathlib.Path]) -> str:
-    rows = ["| run | median s | median out tokens | median words | median turns | bash calls total | folder files touched per question (median) | left sandbox | denials |", "|---|---|---|---|---|---|---|---|---|"]
+    rows = ["| run | median s | median out tokens | median words | median turns | bash calls total | folder files touched per question (median) | left sandbox | denials | sessions that touched their run dir |", "|---|---|---|---|---|---|---|---|---|---|"]
     for rd in run_dirs:
         qs = load(rd)
         if not qs:
@@ -76,7 +82,8 @@ def table(run_dirs: list[pathlib.Path]) -> str:
         touched = statistics.median(len(files_touched(q)) for q in qs)
         left = sum(1 for q in qs for c in q["tool_calls"] if c.get("asked_to_leave_sandbox"))
         den = sum(len(q.get("permission_denials") or []) for q in qs)
-        rows.append(f"| {rd.relative_to(ROOT) if rd.is_relative_to(ROOT) else rd} | {secs:.1f} | {toks:.0f} | {words:.0f} | {turns:.0f} | {bash} | {touched:.0f} | {left} | {den} |")
+        rundir = sum(1 for q in qs if run_dir_calls(q))
+        rows.append(f"| {rd.relative_to(ROOT) if rd.is_relative_to(ROOT) else rd} | {secs:.1f} | {toks:.0f} | {words:.0f} | {turns:.0f} | {bash} | {touched:.0f} | {left} | {den} | {rundir} |")
     return "\n".join(rows)
 
 
