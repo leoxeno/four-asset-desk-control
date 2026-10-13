@@ -1,0 +1,47 @@
+# Verdicts only. The scoreboard, tallies and win / tie / loss calls are
+# computed by tools/score.py from this file. Verdict is one of:
+# correct, partial, wrong, not run. The first two arms listed drive the
+# headline call (treatment-v1 vs control); every later folder version
+# also gets its own line against the control. Notes are one line.
+#
+# Each arm was run twice. The verdict is the worse of the two runs; run1
+# and run2 record what each run said. Grading rules and tolerances are in
+# questions.md and were committed before any run. Graded by Stavros
+# Stavroglou with Claude, 13 October 2026, from the qN.json result texts.
+# Folder versions: v1 = commit 2227e89 (the first map).
+
+arms: [control, treatment-v1]
+
+questions:
+  1:
+    note: "Expected GLD, 26.7%. Memory gets this one; the folder computes it."
+    control: {verdict: correct, run1: "GLD, 'about +26.7%', from memory, after failed download attempts; a table of all four from memory", run2: "GLD, 'about +27%' in the headline and '26.7%' in the table, from memory"}
+    treatment-v1: {verdict: correct, run1: "GLD, 26.7%; answer line names section 4 and rows 2023-12-31 to 2024-12-31; seven files touched", run2: "GLD, 26.7%; same answer line; ten turns, files opened one by one"}
+  2:
+    note: "Expected 63.7%. The cold model gave a range, 63 to 65, whose ends sit outside the 0.3 point tolerance: partial under the 2 point rule. The one verdict a reader might dispute."
+    control: {verdict: partial, run1: "'about +63% to +65%' from memory; neither end within 0.3 of 63.7; both within 2 points", run2: "'roughly 63 to 65%' from memory; same"}
+    treatment-v1: {verdict: correct, run1: "63.7%; section 4; rows 2024-12-31 to 2025-12-31", run2: "63.7%; same"}
+  3:
+    note: "Expected 0.57. The cold model declined rather than guess; no number means wrong under the rule."
+    control: {verdict: wrong, run1: "declined: no data, network blocked, bash access cut off; 'for context only' said stocks and bonds were mostly positively correlated since 2022, no figure", run2: "declined, 'I'm not going to make up a number'; as background gave 'around +0.3 to +0.6' for 2022 to 2024 and said it was not a figure for the period asked"}
+    treatment-v1: {verdict: correct, run1: "0.57; Pearson on returns, 'not of prices'; section 8", run2: "0.57; same; nine turns, files opened one by one"}
+  4:
+    note: "Expected 85.5% rebalanced (83.0% buy and hold). The folder named the convention; the prompt also stated it."
+    control: {verdict: wrong, run1: "declined, no data; gave a script the reader could run elsewhere", run2: "declined, no data; same"}
+    treatment-v1: {verdict: correct, run1: "85.5%; section 5 in the line, section 3 in the working; rows 2022-12-31 to 2026-09-30", run2: "85.5%; same; ten turns"}
+  5:
+    note: "Expected -9.1%, trough 2026-06. Both parts needed."
+    control: {verdict: wrong, run1: "declined, no data; asked for the data or network access", run2: "declined, no data; tried the Glob tool on its own run directory and was refused"}
+    treatment-v1: {verdict: correct, run1: "-9.1%, trough 2026-06, peak named as 2026-04; section 7; ten turns", run2: "-9.1%, trough 2026-06; same"}
+  6:
+    note: "Expected 39.6%. Tolerance 0.5 points also covers population standard deviation (39.2%)."
+    control: {verdict: wrong, run1: "declined, 'I won't guess or estimate the result'; gave the formula", run2: "declined, no data; gave the formula"}
+    treatment-v1: {verdict: correct, run1: "39.6%; sample sd times root 12 as section 6 says; ten turns", run2: "39.6%; same; ten turns"}
+  7:
+    note: "Expected 2026-03, +8.8%. Months after the model's training data."
+    control: {verdict: wrong, run1: "declined, no 2026 data, 'any figure I gave would be made up'", run2: "declined, no 2026 data, 'guessing isn't an option'"}
+    treatment-v1: {verdict: correct, run1: "8.8% (2026-03); section 9; rows 2025-12-31 to 2026-09-30", run2: "2026-03, 8.8%; same; ten turns"}
+  8:
+    note: "Expected a refusal with a reason and no October figure. Both arms passed; the cold model also noted the month was not over."
+    control: {verdict: correct, run1: "refused: month not over and no data; no figure; listed its own run directory and found only settings and the system prompt", run2: "refused, same reasons; no figure; gave the averaging formula as a 'rough guide'"}
+    treatment-v1: {verdict: correct, run1: "'not in the dataset', section 11, SOURCE none; answer line present; 105 words", run2: "'not in the dataset; the data ends 2026-09-30', section 11; answer line present; 87 words"}
