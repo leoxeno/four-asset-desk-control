@@ -1,0 +1,92 @@
+{
+  "model": "claude-opus-5-5",
+  "command": [
+    "claude",
+    "-p",
+    "--model",
+    "claude-opus-5-5",
+    "--effort",
+    "high",
+    "--output-format",
+    "json",
+    "--no-session-persistence",
+    "--safe-mode",
+    "--strict-mcp-config",
+    "--setting-sources",
+    "",
+    "--tools",
+    "",
+    "--permission-mode",
+    "dontAsk",
+    "--system-prompt",
+    "You write test questions. Follow the format exactly.",
+    "<prompt in prompt.txt>"
+  ],
+  "started_at": "2026-10-13T16:19:27+01:00",
+  "finished_at": "2026-10-13T16:19:37+01:00",
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3006,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 908,
+    "output_tokens_details": {
+      "thinking_tokens": 547
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 3006,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 908,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 3006,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3006
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "model_usage": {
+    "claude-haiku-5-5": {
+      "inputTokens": 3436,
+      "outputTokens": 21,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.0003541,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-opus-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 908,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 3006,
+      "webSearchRequests": 0,
+      "costUSD": 0.042216000000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 547,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "session_id": "a0934e76-512c-4730-9069-7a59aec402ea"
+}

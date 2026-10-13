@@ -29,13 +29,13 @@ def compute() -> dict:
     rets = rets.loc["2023-01":"2026-09"]
     port = rets.mean(axis=1)
     sharpe = port.mean() * 12 / (port.std(ddof=1) * 12 ** 0.5)          # methodology section 6
-    spy_ytd = (1 + rets.loc["2026", "SPY"]).prod() - 1                   # section 4, year to date
     tlt = rets.loc["2023-01":"2025-12", "TLT"]                           # section 9
+    uso_ytd = (1 + rets.loc["2026", "USO"]).prod() - 1                   # section 4, year to date (sections 2 and 5 for the compounding)
     return {
         "sharpe": round(float(sharpe), 2),
-        "spy_ytd_2026": round(float(spy_ytd) * 100, 1),
         "tlt_worst_return": round(float(tlt.min()) * 100, 1),
         "tlt_worst_month": str(tlt.idxmin()),
+        "uso_ytd_2026": round(float(uso_ytd) * 100, 1),
         "n_2026_months": int(len(rets.loc["2026"])),
     }
 
@@ -56,14 +56,14 @@ def render(k: dict, prompts: list[tuple[str, str, str]]) -> str:
             "methodology section 6; `tools/outside_key.py`, sharpe.",
         ),
         "X2": (
-            f"**{k['spy_ytd_2026']}%** (nine monthly returns, January to September 2026)",
-            "correct within 0.3 percentage points. Partial within 2 percentage points. Wrong otherwise.",
-            "methodology section 4 (year to date); `tools/outside_key.py`, spy_ytd_2026.",
-        ),
-        "X3": (
             f"**{k['tlt_worst_return']}%** (in {k['tlt_worst_month']}; the month is not asked for, but a wrong month beside the right number is noted)",
             "correct within 0.3 percentage points. Partial within 2 percentage points. Wrong otherwise.",
             "methodology sections 2 and 9; `tools/outside_key.py`, tlt_worst.",
+        ),
+        "X3": (
+            f"**{k['uso_ytd_2026']}%** ({k['n_2026_months']} monthly returns, January to September 2026)",
+            "correct within 0.3 percentage points. Partial within 2 percentage points. Wrong otherwise.",
+            "methodology section 4 (year to date), with sections 2 and 5 for the compounding; `tools/outside_key.py`, uso_ytd_2026.",
         ),
     }
     lines = [
